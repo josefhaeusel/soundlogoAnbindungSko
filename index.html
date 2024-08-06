@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>Sound Logo Wizard</title>
+<title>Skoda Logo Wizard</title>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,8 +14,56 @@
     <script src="https://vjs.zencdn.net/8.12.0/video.min.js"></script>
 
     <style>
+        :root {
+            font-family: 'SKODA Next', sans-serif;
+            --font-label: 'SKODA Next';
+            --font-status-description: 'SKODA Next';
+            --telekom-color-primary-standard: #8dfab4;
+            --telekom-color-primary-hovered: #b6ffd0;
+            --telekom-color-primary-pressed:  #134235;
+
+            --telekom-color-text-and-icon-primary-standard: #419468;
+            --telekom-color-text-and-icon-primary-hovered: #419468;
+            --telekom-color-text-and-icon-primary-pressed: #134235;
+
+            --telekom-color-text-and-icon-white-standard: #161619;
+            --telekom-radius-pill: 10px;
+            --button-radius: 56px;
+
+            --telekom-color-ui-disabled: #cccccc;
+            /* --telekom-color-text-and-icon-additional: #919191; */
+
+            --telekom-color-text-and-icon-functional-success: #419468;
+            /* --telekom-radius-standard: 3rem;
+            --telekom-radius-small: 1rem; */
+
+            /* --telekom-color-functional-success: #00ff00; */
+
+            --telekom-typography-font-size-body: 0.8rem;
+            --telekom-color-text-and-icon-additional: 0.9rem;
+            --telekom-text-style-badge: 400 0.625rem/1.2 "Skoda NEXT", sans-serif;
+            --telekom-text-style-small: 500 0.75rem/1.35 "Skoda NEXT", sans-serif;
+            --telekom-text-style-small-bold: 700 0.75rem/1.35 "Skoda NEXT", sans-serif;
+            --telekom-text-style-caption: 400 0.875rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-caption-bold: 700 0.875rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-body: 200 1rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-body-bold: 700 1rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-ui: 500 1rem/1 "Skoda NEXT", sans-serif;
+            --telekom-text-style-ui-bold: 700 1rem/1 "Skoda NEXT", sans-serif;
+            --telekom-text-style-lead-text: 400 1.25rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-heading-6: 700 1rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-heading-5: 800 1.25rem/1.4 "Skoda NEXT", sans-serif;
+            --telekom-text-style-heading-4: 800 1.5rem/1.35 "Skoda NEXT", sans-serif;
+            --telekom-text-style-heading-3: 800 2rem/1.25 "Skoda NEXT", sans-serif;
+            --telekom-text-style-heading-2: 800 2.625rem/1.15 "Skoda NEXT", sans-serif;
+            --telekom-text-style-heading-1: 800 3.375rem/1.2 "Skoda NEXT", sans-serif;
+            --telekom-text-style-title-2: 800 4.25rem/1.15 "Skoda NEXT", sans-serif;
+            --telekom-text-style-title-1: 800 4.75rem/1.15 "Skoda NEXT", sans-serif;
+        }
+
         .body {
-            font-family: "TeleNeo";
+            font-family: "SKODA Next";
+
         }
         .app-container {
             display: flex;
@@ -99,14 +147,14 @@
             color: var(--telekom-color-text-and-icon-additional);
             padding: 55px 20px 5px;
             text-align: center;
-            font-size: var(--telekom-color-text-and-icon-additional);      
+            font: var(--telekom-text-style-body);
         }
 
         .allowed-file-instructions {
             color: var(--telekom-color-text-and-icon-additional);
             padding: 0px 20px 30px;
             text-align: center;
-            font-size: var(--telekom-color-text-and-icon-additional);      
+            font: var(--telekom-text-style-body);
         }
 
         .upload-button{
@@ -167,10 +215,8 @@
             margin-top: -8px;
             align-items: center;
             display: flex;
-
+            font-size: var(--telekom-color-text-and-icon-additional);      
             color: var(--telekom-color-text-and-icon-functional-success);
-            font-size: var(--telekom-color-text-and-icon-additional);   
-            font-weight: var(--telekom-typography-font-weight-thin);
         }
 
     .video-container {
@@ -310,7 +356,7 @@
 
     .vjs-marker {
         position: absolute;
-        background: #E20076;
+        background: var(--telekom-color-primary-standard);
         width: 10px;
         height: 10px;
         border-radius: 50%;
@@ -366,6 +412,8 @@
         cursor: not-allowed;
         pointer-events: none;
     }
+
+    .button{border-radius:0px}
 
     .left-controls {
         display: flex;
@@ -458,6 +506,7 @@
     .links-card {
         width: 30%
     }
+
     @media (max-width: 1000px) {
         .links-card {
             width: 100%;
@@ -473,7 +522,6 @@
             font-size: 45px;
         }
     }
-
    
     </style>
 </head>
@@ -481,27 +529,29 @@
     <div id="app">
 
         <scale-telekom-header>
+
+            <scale-telekom-nav-list slot="logo" aria-label="Logo">
+                <scale-telekom-nav-item active="" aria-label="Logo">
+                    <img src="assets/skoda_logo.jpg" alt="" style="width: 100%; padding: 0px 16px 0;">
+                </scale-telekom-nav-item>
+              </scale-telekom-nav-list>
             <!-- main-nav (desktop) -->
             <scale-telekom-nav-list slot="main-nav" aria-label="Main Navigation Links">
                 <scale-telekom-nav-item active="" aria-label="Topic One">
-                  <a href="#">Sound Logo Wizard</a>
+                  <a href="#">Škoda Logo Wizard</a>
                 </scale-telekom-nav-item>
               </scale-telekom-nav-list>
 
             <!-- meta-nav (desktop) -->
             <scale-telekom-nav-list variant="meta-nav-external" slot="meta-nav-external" class="scale-telekom-nav-list hydrated" role="menu" alignment="left"><!---->
                 <scale-telekom-nav-item variant="meta-nav-external" class="scale-telekom-nav-item hydrated" role="none"><!---->
-                <a href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" role="menuitem"> Brand &amp; Design <scale-icon-navigation-external-link size="11" class="hydrated" style="display: inline-flex;"></scale-icon-navigation-external-link>
-                </a>
-                </scale-telekom-nav-item>
-                <scale-telekom-nav-item variant="meta-nav-external" class="scale-telekom-nav-item hydrated" role="none"><!---->
-                <a href="https://brand-dialog.telekom.com/" target="_blank" role="menuitem"> Brand Dialog <scale-icon-navigation-external-link size="11" class="hydrated" style="display: inline-flex;"></scale-icon-navigation-external-link>
+                <a href="" target="_blank" role="menuitem"> Brand &amp; Design <scale-icon-navigation-external-link size="11" class="hydrated" style="display: inline-flex;"></scale-icon-navigation-external-link>
                 </a>
                 </scale-telekom-nav-item>
             </scale-telekom-nav-list>
             <scale-telekom-nav-list variant="meta-nav" slot="meta-nav" class="scale-telekom-nav-list hydrated" role="menu" alignment="left"><!---->
                 <scale-telekom-nav-item variant="meta-nav" class="scale-telekom-nav-item hydrated" role="none"><!---->
-                <a href="mailto:contact@brand-design.telekom.com" role="menuitem">{{ $t('header.contact')}}</a>
+                <a href="" role="menuitem">{{ $t('header.contact')}}</a>
                 </scale-telekom-nav-item>
             </scale-telekom-nav-list>
 
@@ -563,7 +613,7 @@
 
                 <transition name="fade-in">
                     <scale-card class="scale-card"v-show="isLoadingAnalysis">
-                        <img style="width:120%;margin: -25px -25px 0" src="assets/patterns/T_pattern_2023_organic_canyon_rgb.png" alt="placeholder" />
+                        <img style="width:120%;margin: -25px -25px 0" src="assets/patterns/skoda_pattern.jpg" alt="placeholder" />
                         <scale-progress-bar class="scale-progress-bar" :percentage="formatNumberPercentage(progressBar.percentage)" :hasError="showGeneralError" :label="$t('analyzing')" show-status="true"></scale-progress-bar>
 
                         <div class="progress-bar-subtitles">
@@ -675,10 +725,10 @@
                     </scale-tab-nav>
                 </div>
 
-                <div v-if="feedback.show" class="feedback-container">
+                <!-- <div v-if="feedback.show" class="feedback-container">
                     <scale-icon-action-thumbs-up :size="feedback.thumbsup.hover ? '30' : '28'" @mouseover="feedback.thumbsup.hover = true" @mouseleave="feedback.thumbsup.hover = false" :fill="feedback.thumbs === 'up' ? '#E20076' : '#000000'" @click="feedback.thumbs = 'up'; console.log('up')" style="padding:5px"></scale-icon-action-thumbs-up>
                     <scale-icon-action-thumbs-down :size="feedback.thumbsdown.hover ? '30' : '28'" @mouseover="feedback.thumbsdown.hover = true" @mouseleave="feedback.thumbsdown.hover = false" :fill="feedback.thumbs === 'down' ? '#E20076' : '#000000'" @click="feedback.thumbs = 'down'; console.log('down')" style="padding:5px"></scale-icon-action-thumbs-down>
-                </div>
+                </div> -->
             </div>
 
         </div>
@@ -694,26 +744,26 @@
 
                 <div class="links-card-container">
                     <div class="links-card">
-                        <scale-card class="links-card"to="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" ><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank"><div class="card__body" part="body"><slot></slot></div></a></div></template>
+                        <scale-card class="links-card"to="" target="_blank" ><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="" target="_blank"><div class="card__body" part="body"><slot></slot></div></a></div></template>
                         <div style="margin: -24px">
-                            <img style="margin-bottom: -4px; width:100%"  src="./assets/card_pics/teaser_images_1_girl.jpg" alt="Alles über Magenta">
+                            <img style="margin-bottom: -4px; width:100%"  src="./assets/card_pics/skoda_car.jpg" alt="Alles über Magenta">
                             <div style="padding: 24px;">
                             <h4 style="margin: 0px 0 16px 0; font: var(--telekom-text-style-heading-4);">{{$t('relatedLinks.guidelines.title')}}</h4>
                             <p>{{$t('relatedLinks.guidelines.description')}}</p>
-                            <scale-button size="small" href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" rel="noopener noreferrer" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.guidelines.button')}}</scale-button>
+                            <scale-button size="small" href="" target="_blank" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="" target="_blank" rel="noopener noreferrer" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.guidelines.button')}}</scale-button>
                             </div>
                         </div>
                         </scale-card>
                     </div>
           
                     <div class="links-card">
-                        <scale-card to="https://brand-dialog.telekom.com/" target="_blank" class="links-card"><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="https://brand-dialog.telekom.com/" target="_blank"><div class="card__body" part="body"><slot></slot></div></a></div></template>
+                        <scale-card to="" target="_blank" class="links-card"><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="https://brand-dialog.telekom.com/" target="_blank"><div class="card__body" part="body"><slot></slot></div></a></div></template>
                         <div style="margin: -24px;">
-                            <img style="margin-bottom: -4px; width:100%;" src="./assets/card_pics/teaser_images_2_branddesign.jpg" alt="Brand Design-Freigaben">
+                            <img style="margin-bottom: -4px; width:100%;" src="./assets/card_pics/skoda_design.jpg" alt="Brand Design-Freigaben">
                             <div style="padding: 24px;">
                             <h4 style="margin: 0px 0 16px 0; font: var(--telekom-text-style-heading-4);">{{$t('relatedLinks.dialog.title')}}</h4>
                             <p v-html="$t('relatedLinks.dialog.description')"></p>
-                            <scale-button size="small" href="https://brand-dialog.telekom.com/" target="_blank" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="https://brand-dialog.telekom.com/" target="_blank" rel="noopener noreferrer" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.dialog.button')}}</scale-button>
+                            <scale-button size="small" href="" target="_blank" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="" target="_blank" rel="noopener noreferrer" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.dialog.button')}}</scale-button>
                             </div>
                         </div>
                         </scale-card>
@@ -722,7 +772,7 @@
                     <div class="links-card">
                         <scale-card to="mailto:contact@brand-design.telekom.com" class="links-card"><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="mailto:contact@brand-design.telekom.com" target="_self"><div class="card__body" part="body"><slot></slot></div></a></div></template>
                         <div style="margin: -24px;">
-                            <img style="margin-bottom: -4px; width:100%;" src="./assets/card_pics/teaser_images_3_help.jpg" alt="Persönlicher Support">
+                            <img style="margin-bottom: -4px; width:100%;" src="./assets/card_pics/skoda_phone.jpg" alt="Persönlicher Support">
                             <div style="padding: 24px;">
                             <h4 style="margin: 0px 0 16px 0; font: var(--telekom-text-style-heading-4);">{{$t('relatedLinks.support.title')}}</h4>
                             <p>{{$t('relatedLinks.support.description')}}</p>
@@ -740,27 +790,11 @@
     </div>
 
 
-        <scale-telekom-footer class="scale-telekom-footer hydrated" type="standard" >
-            <scale-telekom-footer-content class="hydrated"><template shadowrootmode="open"><footer><slot name="extended-navigation"></slot><div part="base"><div part="logo"><scale-logo part="app-logo" exportparts="logo-svg" class="hydrated" style="--focus-outline: var(--telekom-line-weight-highlight) solid var(--telekom-color-functional-focus-on-dark-background);"><template shadowrootmode="open"><style>:host { --logo-size: 38px; }</style><a href="https://colorfix.brand-dialog.telekom.com/de" part="logo variant-white transparent" tabindex="-1" title="Telekom Logo"><scale-logo-svg part="icon" class="hydrated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 38" part="logo-svg" fill="#ffffff" role="img" aria-labelledby="logo-title-2"><title id="logo-title-2">Telekom Logo</title><path d="M7.6 25.1H0v-7.6h7.6v7.6ZM0 0v12.9h2.3v-.4c0-6.1 3.4-9.9 9.9-9.9h.4V30c0 3.8-1.5 5.3-5.3 5.3H6.1V38h19.8v-2.7h-1.1c-3.8 0-5.3-1.5-5.3-5.3V2.7h.4c6.5 0 9.9 3.8 9.9 9.9v.4h2.3V0H0Zm24.3 25.1h7.6v-7.6h-7.6v7.6Z"></path></svg></scale-logo-svg></a></template></scale-logo></div><div part="body"><div part="notice"><slot name="notice"></slot></div><div part="navigation"><slot name="navigation"></slot></div></div></div></footer></template>
-                <span slot="notice"> © Deutsche Telekom AG </span>
-                <ul slot="navigation">
-                <li>
-                    <a href="https://content.brand-dialog.telekom.com/de/impressum/" target="_blank"> {{$t('footer.impressum.name')}} </a>
-                </li>
-                <li>
-                    <a href=https://content.brand-dialog.telekom.com/de/magenta-colorfix-nutzungsbestimmungen/ target="_blank">  {{$t('footer.terms.name')}} </a>
-                </li>
-                <li>
-                    <a href="https://content.brand-dialog.telekom.com/de/magenta-colorfix-datenschutz/" target="_blank">  {{$t('footer.data.name')}} </a>
-                </li>
-                </ul>
-            </scale-telekom-footer-content>
-            </scale-telekom-footer>
-
+    
 
         <script src="multilingual_content.js"></script>
         <script src="soundlogo.js"></script>
-        <script async src='https://team.brand-dialog.telekom.com/addons/Channels/HelpWidget/Views/js/supportpal.min.js?v=5.2.2'></script>
+        <!-- <script async src='https://team.brand-dialog.telekom.com/addons/Channels/HelpWidget/Views/js/supportpal.min.js?v=5.2.2'></script> -->
 
 
         

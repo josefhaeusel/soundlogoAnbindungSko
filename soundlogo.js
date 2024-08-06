@@ -1112,26 +1112,26 @@ function getCsrfHeader() {
 }
 
 
-window.supportpalAsyncInit = function () {
-    SupportPal.mount({
-        "baseURL": "https://team.brand-dialog.telekom.com/de/helpwidget",
-        "hash": "NlMmQsFgma",
-        "type": "popup",
-        "position": "right",
-        "colour": "#e20074",
-        "buttonIcon": "bubble2",
-        "messages": {
-            "en": {
-                "dock_text": "Feedback"
-            }
-        },
-        "knowledgebase": {
-            "enabled": false
-        },
-        "submitTicket": {
-            "enabled": true,
-            "departmentId": "15",
-            "subject": true
-        }
-    });
-};
+// window.supportpalAsyncInit = function () {
+//     SupportPal.mount({
+//         "baseURL": "https://team.brand-dialog.telekom.com/de/helpwidget",
+//         "hash": "NlMmQsFgma",
+//         "type": "popup",
+//         "position": "right",
+//         "colour": "#e20074",
+//         "buttonIcon": "bubble2",
+//         "messages": {
+//             "en": {
+//                 "dock_text": "Feedback"
+//             }
+//         },
+//         "knowledgebase": {
+//             "enabled": false
+//         },
+//         "submitTicket": {
+//             "enabled": true,
+//             "departmentId": "15",
+//             "subject": true
+//         }
+//     });
+// };

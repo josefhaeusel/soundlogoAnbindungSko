@@ -3,8 +3,8 @@ const I18n = VueI18n.createI18n({
     messages: {
         English: {
             title: {
-                main: 'Sound Logo Wizard',
-                sub: 'Add the iconic Telekom Sound Logo at the end of all videos.<br>Keep everything on brand with the help of AI.'
+                main: 'Škoda Logo Wizard',
+                sub: 'Add the iconic Škoda Sound Logo at the end of all videos.<br>Keep everything on brand with the help of AI.'
             },
             upload: {
                 instructions: 'Upload a video or drop the file here',
@@ -14,16 +14,16 @@ const I18n = VueI18n.createI18n({
                 supportedFormats: 'Only videos are supported.',
                 supportedResolutions: 'Supported resolutions: FullHD, UHD.',
                 supportedRatios: 'Supported ratios: 16:9, 9:16, 1:1.',
-                supportedAnimationLength: 'The existing T-Outro Animation is too short.',
+                supportedAnimationLength: 'The existing Outro Animation is too short.',
                 supportedVideoLength: 'The video must not be longer than {maximumVideoLength} seconds.',
                 supportedFileSize: 'The video must not be larger than {maximumFileSize}MB.',
-                brandPortal: 'Please use the official <a h-ref="www.brand-design.telekom.com">T-Outro Animation</a>.<br />',
+                brandPortal: 'Please use the official <a h-ref="www.brand-design.Škoda.com">Outro Animation</a>.<br />',
                 generalError: {title: 'Something went wrong.', description:'Please try reloading the page and uploading the file again. If the error persists, consider contacting the Brand Design team.'},
             },
             header: {
                 contact: 'Contact Brand Design team'
             },
-            progressTexts: ['Uploading Video...', 'Retrieving Video Data...', 'Converting Video Format...',"Splitting Audio from Video...", "Detecting T-Outro Animation...", "Retrieving Key and Loudness...", "Appending T-Outro Animation...", "Loading Video...", "Done."],
+            progressTexts: ['Uploading Video...', 'Retrieving Video Data...', 'Converting Video Format...',"Splitting Audio from Video...", "Detecting Outro Animation...", "Retrieving Key and Loudness...", "Appending Outro Animation...", "Loading Video...", "Done."],
             analyzing: 'Analyzing...',
             error: 'Something went wrong. Please try uploading again.',
             video: {
@@ -42,10 +42,10 @@ const I18n = VueI18n.createI18n({
                 title: 'What we did:',
                 appendedAnimation: 'Appended Animation',
                 logoDetected: 'Detected Animation',
-                appendedDescription: 'Because the T-Outro Animation could not be detected, it was appended to the video\'s ending.',
-                detectedDescription: 'The T-Outro Animation was detected by Computer-Vision AI.',
+                appendedDescription: 'Because the Outro Animation could not be detected, it was appended to the video\'s ending.',
+                detectedDescription: 'The Outro Animation was detected by Computer-Vision AI.',
                 setSoundlogo: 'Set Sound Logo',
-                synchronized: 'The Telekom Sound Logo has been synchronized to the T-Outro animation.',
+                synchronized: 'The Škoda Sound Logo has been synchronized to the Outro animation.',
                 matched: 'Its tonality and loudness have been matched to the AI-detected music. The music has been filtered and faded for a smooth transition.',
                 audioEmpty: 'Your video\'s audio track is empty or doesn\'t exist. The Sound Logo\'s tonality and loudness have been set to standardized values.',
                 silentEnding: 'Your video ending (except animation) is silent. The Sound Logo\'s tonality has been set to standardized values.',
@@ -56,16 +56,16 @@ const I18n = VueI18n.createI18n({
             },
             relatedLinks: {
                 title: 'Related links',
-                subtitle: 'Do you have any questions or want to find out more about Telekom Magenta? Let our brand design team help you further.',
+                subtitle: 'Do you have any questions or want to find out more about Škoda? Let our brand design team help you further.',
                 guidelines: {
-                    title: 'All about Magenta',
-                    description: 'Do you have any questions or want to find out more about Telekom Magenta? Let our brand design team help you further.',
+                    title: 'All about Škoda',
+                    description: 'Do you have any questions or want to find out more about Škoda? Let our brand design team help you further.',
                     button: 'Our brand design guidelines',
                 },
                 dialog: {
                     title: 'Brand design approvals',
-                    description: 'Do you need help with creating communication or need your designs approved? The <span class="text-nowrap">Brand Dialog</span> online platform is the right place for you.',
-                    button: 'Visit Brand Dialog',
+                    description: 'Do you need help with creating communication or need your designs approved? The <span class="text-nowrap">Brand Design</span> online platform is the right place for you.',
+                    button: 'Visit Brand Design',
                 },
                 support: {
                     title: 'Get personal support',
@@ -76,22 +76,22 @@ const I18n = VueI18n.createI18n({
             footer: {
                 impressum: {
                     name: 'Imprint',
-                    href: "https://content.brand-dialog.telekom.com/en/magenta-colorfix-nutzungsbestimmungen/"
+                    href: ""
                 },
                 terms: {
                     name: 'Terms of Use',
-                    href: "https://content.brand-dialog.telekom.com/en/magenta-colorfix-terms-of-use/"
+                    href: ""
                 },
                 data: {
                     name: 'Data Privacy',
-                    href: "https://content.brand-dialog.telekom.com/en/magenta-colorfix-data-privacy/"
+                    href: ""
                 }
             },
         },
         Deutsch: {
             title: {
-                main: 'Sound Logo Wizard',
-                sub: 'Binden Sie das ikonische Telekom Sound Logo an das Ende aller Videos an.<br>Bleibe mithilfe von KI on-Brand.'
+                main: 'Škoda Logo Wizard',
+                sub: 'Binden Sie das ikonische Škoda Sound Logo an das Ende aller Videos an.<br>Bleibe mithilfe von KI on-Brand.'
             },
             upload: {
                 instructions: 'Laden Sie ein Video hoch oder ziehen Sie die Datei hierher',
@@ -101,17 +101,17 @@ const I18n = VueI18n.createI18n({
                 supportedFormats: 'Nur Videos werden unterstützt.',
                 supportedResolutions: 'Unterstützte Auflösungen: FullHD, UHD.',
                 supportedRatios: 'Unterstützte Ratios: 16:9, 9:16, 1:1.',
-                supportedAnimationLength: 'Die vorhandene T-Outro Animation ist zu kurz.',
+                supportedAnimationLength: 'Die vorhandene Outro Animation ist zu kurz.',
                 supportedVideoLength: 'Das Video darf nicht länger als {maximumVideoLength} Sekunden sein.',
                 supportedFileSize: 'Das Video darf nicht größer als {maximumFileSize}MB sein.',
-                brandPortal: 'Bitte nutzen Sie die offizielle <a h-ref="www.brand-design.telekom.com">T-Outro Animation</a>.<br />',
+                brandPortal: 'Bitte nutzen Sie die offizielle <a h-ref="www.brand-design.telekom.com">Outro Animation</a>.<br />',
                 generalError: {title: 'Etwas ist schiefgeloffen', description:'Bitte versuchen Sie, die Seite zu aktualisieren und die Datei erneut hochzuladen. Sollte der Fehler weiterhin bestehen, wenden Sie sich bitte an das Brand Design Team.' }
 
             },
             header: {
                 contact: 'Brand Design Team kontaktieren'
             },
-            progressTexts: ['Video hochladen...', 'Videodaten abrufen...', 'Videoformat konvertieren...', "Audio vom Video trennen...", "T-Outro-Animation ermitteln...", "Tonart und Lautstärke erkennen...", "T-Outro-Animation anhängen...", "Video laden...", "Fertig."],
+            progressTexts: ['Video hochladen...', 'Videodaten abrufen...', 'Videoformat konvertieren...', "Audio vom Video trennen...", "Outro-Animation ermitteln...", "Tonart und Lautstärke erkennen...", "Outro-Animation anhängen...", "Video laden...", "Fertig."],
             analyzing: 'Analysieren...',
             error: 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut hochzuladen.',
             video: {
@@ -130,10 +130,10 @@ const I18n = VueI18n.createI18n({
                 title: 'Was wir erledigt haben:',
                 appendedAnimation: 'Animation angebunden',
                 logoDetected: 'Animation erkannt',
-                appendedDescription: 'Da die T-Outro Animation nicht erkannt werden konnte, wurde sie an das Videoende angehängt.',
-                detectedDescription: 'Die T-Outro Animation wurde durch Computer-Vision AI erkannt.',
+                appendedDescription: 'Da die Outro Animation nicht erkannt werden konnte, wurde sie an das Videoende angehängt.',
+                detectedDescription: 'Die Outro Animation wurde durch Computer-Vision AI erkannt.',
                 setSoundlogo: 'Sound Logo platziert',
-                synchronized: 'Das Telekom Sound Logo wurde mit der T-Outro Animation synchronisiert.',
+                synchronized: 'Das Škoda Sound Logo wurde mit der Outro Animation synchronisiert.',
                 matched: 'Seine Tonalität und Lautstärke wurden an die von der KI erkannte Musik angepasst. Die Musik wurde gefiltert und für einen sanften Übergang ausgeblendet.',
                 audioEmpty: 'Die Audiospur Ihres Videos ist leer oder existiert nicht. Die Tonalität und Lautstärke des Sound Logos wurden auf standardisierte Werte eingestellt.',
                 silentEnding: 'Ihr Videoende (außer Animation) ist still. Die Tonalität des Sound Logos wurde auf standardisierte Werte eingestellt.',
@@ -144,16 +144,16 @@ const I18n = VueI18n.createI18n({
             },
             relatedLinks: {
                 title: 'Weiterführende Links',
-                subtitle: 'Du hast Fragen oder möchtest mehr über Telekom Magenta erfahren? Unser Brand Design Team hilft dir gerne weiter.',
+                subtitle: 'Du hast Fragen oder möchtest mehr über Škoda erfahren? Unser Brand Design Team hilft dir gerne weiter.',
                 guidelines: {
-                    title: 'Alles über Magenta',
-                    description: 'Die Telekom ist eines der wenigen Unternehmen, das man international über seine Markenfarbe erkennt. Alle Gestaltungsvorgaben und fünf Prinzipien für den Einsatz von Magenta.',
+                    title: 'Alles über Škoda',
+                    description: 'Die Škoda ist eines der wenigen Unternehmen, das man international über seine Markenfarbe erkennt. Alle Gestaltungsvorgaben und fünf Prinzipien für den Einsatz von Škoda.',
                     button: 'Unsere Brand Design-Guidelines',
                 },
                 dialog: {
                     title: 'Brand Design-Freigaben',
-                    description: 'Du benötigst Hilfe bei der Erstellung von Kommunikation oder möchtest deine Artworks freigeben lassen? Dann nutze dazu unsere Online-Plattform <span class="text-nowrap">Brand Dialog</span>.',
-                    button: 'Brand Dialog-Plattform öffnen',
+                    description: 'Du benötigst Hilfe bei der Erstellung von Kommunikation oder möchtest deine Artworks freigeben lassen? Dann nutze dazu unsere Online-Plattform <span class="text-nowrap">Brand Design</span>.',
+                    button: 'Brand Design-Plattform öffnen',
                 },
                 support: {
                     title: 'Persönlicher Support',
@@ -164,15 +164,15 @@ const I18n = VueI18n.createI18n({
             footer: {
                 impressum: {
                     name: 'Impressum',
-                    href: "https://content.brand-dialog.telekom.com/de/magenta-colorfix-nutzungsbestimmungen/"
+                    href: ""
                 },
                 terms: {
                     name: 'Nutzungsbestimmungen',
-                    href: "https://content.brand-dialog.telekom.com/de/magenta-colorfix-terms-of-use/"
+                    href: ""
                 },
                 data: {
                     name: 'Datenschutz',
-                    href: "https://content.brand-dialog.telekom.com/de/magenta-colorfix-data-privacy/"
+                    href: ""
                 }
             },
 
