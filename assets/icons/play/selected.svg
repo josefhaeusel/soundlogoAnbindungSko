@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>/svg/icon/action/play/selected</title>
+    <g id="icon/action/play/selected" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M12,0.999999954 C5.92486773,0.999999954 0.999999954,5.92486773 0.999999954,12 C0.999999954,18.0751323 5.92486773,23 12,23 C18.0751323,23 23,18.0751323 23,12 C23,9.0826186 21.8410748,6.28472555 19.7781746,4.22182537 C17.7152745,2.1589252 14.9173814,0.999999954 12,0.999999954 Z M9.49999999,16.5 L9.49999999,7.49999998 L16.375,12 L9.49999999,16.5 Z" id="Icon" fill="#000000"></path>
+    </g>
+</svg>

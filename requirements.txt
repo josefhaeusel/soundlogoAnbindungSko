@@ -1,0 +1,7 @@
+setuptools
+pyloudnorm
+opencv-python
+librosa
+matplotlib
+soundfile
+numpy==1.19.3

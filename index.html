@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Sound Logo Wizard</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@telekom/scale-components/dist/scale-components/scale-components.css" />
+    <link href="https://vjs.zencdn.net/8.12.0/video-js.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@videojs/themes@1/dist/forest/index.css" rel="stylesheet">
+    <script type="module" src="node_modules/@telekom/scale-components/dist/scale-components/scale-components.esm.js"></script>
+    <script src="https://unpkg.com/vue@3.4.31/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue-i18n@9.13.1/dist/vue-i18n.global.prod.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://vjs.zencdn.net/8.12.0/video.min.js"></script>
+
+    <style>
+        .body {
+            font-family: "TeleNeo";
+        }
+        .app-container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px 20px
+        }
+        .tool-background {
+            background-color: var(--telekom-color-background-surface-subtle);
+        }
+        .layer{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            width:100%;
+            max-width: 950px;
+        }
+        .title,
+        .description {
+            text-align: center;
+        }
+
+        .title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            padding: 20px 0 0;
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 96px;
+            text-align: center;
+        }
+
+        .description {
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            z-index: 3
+        }
+        .dropzone {
+            cursor: pointer;
+            background-color: var(--telekom-color-background-canvas-subtle);
+            border-radius: 10px;
+            border-width: 1.5px;
+            max-width: 530px;
+            width: 95%;
+            height: 250px;
+            border-color: #ABABAB;
+            border-style: dashed;
+            transition: background-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropzone:hover {
+            background-color: var(--telekom-color-ui-faint);
+            cursor: pointer;
+        }
+
+        .upload-instructions {
+            color: var(--telekom-color-text-and-icon-additional);
+            padding: 55px 20px 5px;
+            text-align: center;
+            font-size: var(--telekom-color-text-and-icon-additional);      
+        }
+
+        .allowed-file-instructions {
+            color: var(--telekom-color-text-and-icon-additional);
+            padding: 0px 20px 30px;
+            text-align: center;
+            font-size: var(--telekom-color-text-and-icon-additional);      
+        }
+
+        .upload-button{
+            padding: 20px 0;
+            z-index: 10;
+        }
+
+        .fileinput{
+            position:absolute;
+            height: 130%;
+            width: 100%;
+            opacity: 0;
+        }
+
+        .fileinput-big{
+            position: absolute;
+            width: 98vw;
+            height: 75%;
+            z-index: 2;
+            opacity: 0;
+        }
+
+        .scale-card{
+            width:95%;
+            max-width: 530px; 
+            padding: 0 0 20px;
+        }
+
+        .scale-card .cart {
+            background: #000000
+        }
+
+        .scale-progress-bar {
+            max-width: 480px;
+            --color-status: #000;
+        }
+        label.progress-bar__label {
+            font-size: var(--font-size-heading);
+        }
+
+        .progress-bar-subtitles {
+            display: flex;
+            flex-direction: column-reverse;
+            margin-top: 20px;
+            margin-bottom: -15px;
+            max-height: 95px;
+        }
+
+        .current-phase {
+            margin-top: -5px;
+            align-items: center;
+            display: flex;
+            color: var(--telekom-color-text-and-icon-additional);
+            font-size: var(--telekom-color-text-and-icon-additional);      
+        }
+
+        .previous-phase {
+            margin-top: -8px;
+            align-items: center;
+            display: flex;
+
+            color: var(--telekom-color-text-and-icon-functional-success);
+            font-size: var(--telekom-color-text-and-icon-additional);   
+            font-weight: var(--telekom-typography-font-weight-thin);
+        }
+
+    .video-container {
+        position: relative;
+        border-radius: 10px;
+    }
+
+    .shadow-fade-overall {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+        pointer-events: none;
+        z-index: 1;
+        border-radius: 10px;
+    }
+
+    .shadow-fade-bottom {
+        position: absolute;
+        bottom: 0;
+        margin-bottom: -1px;
+        width: 100%;
+        height: 50px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+        pointer-events: none;
+        border-radius: 10px;
+
+    }
+    .video-player-blocker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        cursor: not-allowed;
+        z-index: 4;
+        border-radius: 10px;
+    }
+    .video-player-loading-spinner{
+        top: 43.2%;
+        position: absolute;
+        left: 46.2%;
+        cursor:  not-allowed;
+        z-index: 5;
+
+    }
+    .video-js.vjs-theme-forest {
+        width: 95dvw;
+        height: calc(95dvw * 9 / 16);
+        max-width: 950px;
+        max-height: calc(950px * 9 / 16);
+    }
+    .video-js.vjs-theme-forest .vjs-play-progress {
+        background-color: #ffffff
+    }
+    .vjs-theme-forest {
+        --vjs-theme-forest--primary: #73859FBF;
+        --vjs-theme-forest--secondary: #ffffff;
+    }
+
+    .video-js.vjs-theme-forest .vjs-playback-rate {
+        display: none
+    }
+
+    .video-js.vjs-theme-forest .vjs-volume-menu-button {
+        display: none
+    }
+
+    .video-js.vjs-theme-forest .vjs-fullscreen-control {
+        display: none
+    }
+
+    .video-js.vjs-theme-forest .vjs-picture-in-picture-control {
+        display: none;
+    }
+
+    .video-js.vjs-theme-forest .vjs-big-play-button {
+        background-image: url('assets/icons/play/default.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        max-width: 65px;
+        max-height: 65px;
+        min-width:40px;
+        min-height:40px;
+        width: 100%;
+        height: 100%;
+        z-index:2;
+    }
+
+    .video-js.vjs-theme-forest .vjs-control-bar {
+        z-index:2;
+    }
+
+    .video-js.vjs-theme-forest .vjs-big-play-button:hover {
+        background-image: url('assets/icons/play/selected.png')
+    }
+
+    .video-js.vjs-theme-forest .vjs-play-control .vjs-icon-placeholder::before {
+        content: none !important;
+        display: none
+    }
+
+    .video-js.vjs-theme-forest .vjs-play-control.vjs-control.vjs-button.vjs-paused {
+        background-image: url('assets/icons/play/default.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 28px 28px;
+    }
+
+    .video-js.vjs-theme-forest .vjs-play-control.vjs-control.vjs-button.vjs-paused:hover {
+        background-image: url('assets/icons/play/selected.png');
+    }
+
+    .video-js.vjs-theme-forest .vjs-play-control.vjs-control.vjs-button.vjs-playing {
+        background-image: url('assets/icons/pause/default.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 28px 28px;
+    }
+
+    .video-js.vjs-theme-forest .vjs-play-control.vjs-control.vjs-button.vjs-playing:hover {
+        background-image: url('assets/icons/pause/selected.png');
+    }
+
+    .video-js.vjs-theme-forest .vjs-mouse-display {
+        display: none;
+    }
+
+    .scale-modal {
+        --font-size-heading: 30px;
+        gap: 10px;
+    }
+
+    .vjs-marker {
+        position: absolute;
+        background: #E20076;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        z-index: 30;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .vjs-marker:hover span {
+        opacity: 1;
+    }
+
+    .vjs-marker span {
+        position: absolute;
+        opacity: 0;
+        margin-left: -55px;
+        z-index: 90;
+        background: rgba(0, 0, 0, 0.8);
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 20px;
+        transition: opacity 0.3s;
+        top: 30px;
+        white-space: nowrap;
+    }
+
+    .controls-container {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap:wrap-reverse;
+        padding-top: 20px;
+        position: relative;
+        height: auto;
+        row-gap: 15px; 
+        width: 100%;
+    }
+
+    .av-actions-container {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 0 50px 0;
+        position: relative;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .left-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .right-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .key-label {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .download-audio-button {
+        left: 0;
+        margin-left: 0px;
+        white-space: nowrap;
+    }
+
+    .fade-in-enter-from,
+    .fade-in-leave-to {
+        opacity: 0;
+    }
+
+    .fade-in-enter-to,
+    .fade-in-leave-from {
+        opacity: 1;
+    }
+    .fade-in-enter-active{
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
+    }
+
+    .fade-enter-to,
+    .fade-leave-from {
+        opacity: 1;
+    }
+    .fade-enter-active,
+    .fade-leave-active{
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    .subtitle-fade-enter-from,
+    .subtitle-fade-leave-to {
+        opacity: 0;
+    }
+
+    .subtitle-fade-enter-to,
+    .subtitle-fade-leave-from {
+        opacity: 1;
+    }
+    .subtitle-fade-enter-active{
+        transition: opacity 0.5s ease-in;
+    }
+
+
+    .feedback-container {
+        display:flex;
+        flex-direction: row;
+        gap: 20px
+    }
+
+    .language-selector {
+        margin: -20px;
+
+    }
+    .related-links-container {
+        display: flex;
+        flex-direction: column; 
+        margin: 2.5rem;
+        max-width: 1300px;
+    }
+
+    .links-card-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        row-gap: 20px;
+    }
+    .links-card {
+        width: 30%
+    }
+    @media (max-width: 1000px) {
+        .links-card {
+            width: 100%;
+            max-width: none;
+            min-width: 240px;
+        }
+        .scale-card {
+            width: 100%;
+        }
+    }
+    @media (max-width: 530px) {
+        .title {
+            font-size: 45px;
+        }
+    }
+
+   
+    </style>
+</head>
+<body>
+    <div id="app">
+
+        <scale-telekom-header>
+            <!-- main-nav (desktop) -->
+            <scale-telekom-nav-list slot="main-nav" aria-label="Main Navigation Links">
+                <scale-telekom-nav-item active="" aria-label="Topic One">
+                  <a href="#">Sound Logo Wizard</a>
+                </scale-telekom-nav-item>
+              </scale-telekom-nav-list>
+
+            <!-- meta-nav (desktop) -->
+            <scale-telekom-nav-list variant="meta-nav-external" slot="meta-nav-external" class="scale-telekom-nav-list hydrated" role="menu" alignment="left"><!---->
+                <scale-telekom-nav-item variant="meta-nav-external" class="scale-telekom-nav-item hydrated" role="none"><!---->
+                <a href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" role="menuitem"> Brand &amp; Design <scale-icon-navigation-external-link size="11" class="hydrated" style="display: inline-flex;"></scale-icon-navigation-external-link>
+                </a>
+                </scale-telekom-nav-item>
+                <scale-telekom-nav-item variant="meta-nav-external" class="scale-telekom-nav-item hydrated" role="none"><!---->
+                <a href="https://brand-dialog.telekom.com/" target="_blank" role="menuitem"> Brand Dialog <scale-icon-navigation-external-link size="11" class="hydrated" style="display: inline-flex;"></scale-icon-navigation-external-link>
+                </a>
+                </scale-telekom-nav-item>
+            </scale-telekom-nav-list>
+            <scale-telekom-nav-list variant="meta-nav" slot="meta-nav" class="scale-telekom-nav-list hydrated" role="menu" alignment="left"><!---->
+                <scale-telekom-nav-item variant="meta-nav" class="scale-telekom-nav-item hydrated" role="none"><!---->
+                <a href="mailto:contact@brand-design.telekom.com" role="menuitem">{{ $t('header.contact')}}</a>
+                </scale-telekom-nav-item>
+            </scale-telekom-nav-list>
+
+              <scale-telekom-nav-list variant="lang-switcher" slot="lang-switcher" alignment="right" class="scale-telekom-nav-list hydrated" role="menu"><!---->
+                <scale-telekom-nav-item  @click="updateLanguage($i18n.availableLocales[0])"><!---->
+                  <a :aria-current="selectedLanguage==$i18n.availableLocales[0]" role="menuitem">DE</a>
+                </scale-telekom-nav-item>
+                <scale-telekom-nav-item active="" @click="updateLanguage($i18n.availableLocales[1])"><!---->
+                  <a :aria-current="selectedLanguage==$i18n.availableLocales[1]" role="menuitem">EN</a>
+                </scale-telekom-nav-item>
+              </scale-telekom-nav-list>
+
+
+        </scale-telekom-header>
+
+    <div class="app-container">
+        <div class="wrapper">
+
+            <input v-if="!isLoadingAnalysis && currentLayer === 'layer1'" type="file" id="fileInputBig" class="fileinput-big" @change="handleFileUpload" accept="video/*"/>
+            <div class="title-container">
+                <div class="title">{{$t('title.main')}}</div>
+                <div class="description" v-html="$t('title.sub')"></div>
+            </div>
+
+            <div v-show="currentLayer === 'layer1'" id="layer1" class="layer">
+                
+                <transition name="fade-in-in">
+                    <div class="upload-container" v-if="!isLoadingAnalysis">
+                        <div class="dropzone">
+                            <input type="file" ref="fileInput" id="fileInput" class="fileinput" @change="handleFileUpload" accept="video/*"/>
+                            <span class="upload-instructions">{{$t('upload.instructions')}}</span>
+                            <span class="allowed-file-instructions">{{$t('upload.allowedFiles', {maximumFileSize: maximumFileSize, maximumVideoLength: maximumVideoLength})}}</span>
+                            <scale-icon-action-drag-and-drop style="padding-bottom: 30px;" fill="var(--telekom-color-text-and-icon-additional)"></scale-icon-action-drag-and-drop>
+
+                        </div>
+
+                        <scale-button class="upload-button">
+                            <scale-icon-action-upload-to-cloud style="margin-right: 5px;"></scale-icon-action-upload-to-cloud>
+                            {{$t('upload.button')}}
+                        </scale-button>
+
+                        <scale-notification v-if="showInvalidFormatToast" :heading="$t('upload.invalidFormat.title')" variant="warning" type="toast" dismissible opened @scale-before-close="showInvalidFormatToast=false"  style="z-index: 1000">
+                            <span slot="text">{{$t('upload.invalidFormat.description')}}<br /></span>
+                            <span slot="text" v-if="actionList.commonFiletype === false">{{$t('upload.supportedFormats')}}<br /></span>
+                            <span slot="text" v-if="actionList.commonResolution === false">{{$t('upload.supportedResolutions')}}<br /></span>
+                            <span slot="text" v-if="actionList.commonRatio === false">{{$t('upload.supportedRatios')}}<br /></span>
+                            <span slot="text" v-if="actionList.fatalAnimationLength">{{$t('upload.supportedAnimationLength')}}<br /></span>
+                            <span slot="text" v-show="actionList.commonFileSize === false">{{$t('upload.supportedFileSize',{maximumFileSize: this.maximumFileSize}  )}}<br /></span>
+                            <span slot="text" v-show="actionList.commonVideoLength === false">{{$t('upload.supportedVideoLength' , {maximumVideoLength: this.maximumVideoLength} )}}<br /></span>
+                            <span slot="text" v-if="actionList.commonResolution === false || actionList.commonRatio === false || actionList.fatalAnimationLength" v-html="$t('upload.brandPortal')"></span>
+                        </scale-notification>
+
+                        <scale-notification v-if="showGeneralError" :heading="$t('upload.generalError.title')" variant="warning" type="toast" dismissible opened @scale-before-close="showInvalidFileTypeToast=false" style="z-index: 1000">
+                            <span slot="text">{{$t('upload.generalError.description')}}</span>
+                        </scale-notification>
+
+                    </div>
+                </transition>
+
+                <transition name="fade-in">
+                    <scale-card class="scale-card"v-show="isLoadingAnalysis">
+                        <img style="width:120%;margin: -25px -25px 0" src="assets/patterns/T_pattern_2023_organic_canyon_rgb.png" alt="placeholder" />
+                        <scale-progress-bar class="scale-progress-bar" :percentage="formatNumberPercentage(progressBar.percentage)" :hasError="showGeneralError" :label="$t('analyzing')" show-status="true"></scale-progress-bar>
+
+                        <div class="progress-bar-subtitles">
+                            <transition name="subtitle-fade" v-for="(phase, index) in $tm('progressTexts')">
+                                <p v-show="progressBar.hasBeenActive.includes(index)" :class="getPhaseStyle(index)"><scale-icon-action-success size="14" v-if="index != progressBar.phase || progressBar.phase==(progressBar.phaseValues.length)"></scale-icon-action-success><span v-if="index != progressBar.phase || progressBar.phase==(progressBar.phaseValues.length)">&nbsp;&nbsp;</span>{{phase}}</p>
+                            </transition>
+                        </div>
+                    </scale-card>
+                </transition>
+            </div>
+
+            <div v-show="currentLayer === 'layer2'" id="layer2" class="layer">
+                <div class="video-container"@click="this.playerHasBeenClicked = true">
+                    <video ref="myVideo" id="myVideo" class="video-js vjs-theme-forest"
+                    style="border-radius: 10px;"
+                    controls muted @click="this.playerHasBeenClicked = true">
+                        <p class="vjs-no-js">
+                            To view this video please enable JavaScript, and consider upgrading to a
+                            web browser that
+                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                        </p>
+                    </video>
+                    <div class="shadow-fade-bottom"></div>
+                    <transition name="fade">
+                        <div v-if="!playerHasBeenClicked" class="shadow-fade-overall"></div>
+                    </transition>
+
+                    <transition name="fade">
+                        <div v-if="isLoadingResult"class="video-player-blocker"></div>
+                    </transition>
+
+                    <transition name="fade">
+                        <scale-loading-spinner v-if="isLoadingResult" size="large" class="video-player-loading-spinner"></scale-loading-spinner>
+                    </transition>
+
+                </div>
+
+                <transition name="fade">
+                    <div class="controls-container" v-if="!isLoadingAnalysis">
+                        <div class="left-controls">
+                            <scale-button @click="downloadVideo" style="left:0; display:flex; align-items: center;" :disabled="isLoadingResult">
+                                <scale-loading-spinner v-if="isLoadingResult"></scale-loading-spinner>
+                                <scale-icon-action-download size=20 v-if="!isLoadingResult"></scale-icon-action-download>
+                                {{$t('download.result')}}
+                            </scale-button>
+                        </div>
+
+                        <div class="right-controls">
+                            <div v-if="isLoadingResult"style="position:absolute; z-index: 100; cursor: not-allowed; width:100%; height:100%; max-width: 300px"></div>
+
+                            <div class="key-label">{{$t('soundlogo.key')}}:</div>
+                            <scale-tooltip placement="bottom-start">
+                                <span v-if="!actionList.altKeyDetected" slot="content">
+                                    {{$t('soundlogo.recommended', {key: this.soundlogoKeys[0]})}}
+                                </span>
+                                <span v-if="actionList.altKeyDetected" slot="content">
+                                    <scale-icon-content-music size="12" selected></scale-icon-content-music>
+                                    {{$t('soundlogo.bothKeysPossible')}}
+                                </span>
+
+                                    <scale-segmented-button id="keyDisplay" size="medium">
+                                        <scale-segment v-for="(key, index) in soundlogoKeys" :selected="index == selectedKey.id" @click="updateLogoKey(index)">{{key}}</option>
+                                    </scale-segmented-button>
+                                
+                            </scale-tooltip>
+                        </div>
+                    </div>
+                </transition>
+
+                <div class="controls-container">
+                    <scale-divider></scale-divider>
+                </div>
+
+                <h1 style="align-self: flex-start;">{{$t('actions.title')}}</h1>
+
+                <div class="av-actions-container">
+
+                    <scale-tab-nav size="small">
+                        <scale-tab-header slot="tab">
+                            <scale-icon-action-show-password></scale-icon-action-show-password>
+                            <span v-if="actionList.appendedAnimation">{{$t('actions.appendedAnimation')}}</span>
+                            <span v-if="actionList.logoDetected">{{$t('actions.logoDetected')}}</span>
+                        </scale-tab-header>
+                        <scale-tab-panel slot="panel">
+                            <span v-if="actionList.appendedAnimation">{{$t('actions.appendedDescription')}}</span>
+                            <span v-if="actionList.logoDetected">{{$t('actions.detectedDescription')}}</span>
+                        </scale-tab-panel>
+                        <scale-tab-header slot="tab">
+                            <scale-icon-content-music></scale-icon-content-music> {{$t('actions.setSoundlogo')}}
+                        </scale-tab-header>
+                        <scale-tab-panel slot="panel">
+                            <span>{{$t('actions.synchronized')}}</span>
+                            <span v-if="!this.actionList.audioSegmentEmpty">&nbsp;{{$t('actions.matched')}}</span>
+                            <span v-if="actionList.audioEmpty">&nbsp;{{$t('actions.audioEmpty')}}</span>
+                            <span v-if="!actionList.audioEmpty && this.actionList.audioSegmentEmpty && !actionList.keyDetected">&nbsp;{{$t('actions.silentEnding')}}</span>
+                        </scale-tab-panel>
+                        <scale-tab-header v-show="actionList.convertedVideo" slot="tab">
+                            <scale-icon-user-file-videos></scale-icon-user-file-videos> {{$t('actions.convertedFormat')}}
+                        </scale-tab-header>
+                        <scale-tab-panel v-show="actionList.convertedVideo" slot="panel">
+                            {{ $t('actions.convertedDescription', {codec: inputVideoData.codec_name} ) }}
+                        </scale-tab-panel>
+                        <scale-tab-header slot="tab">
+                            <scale-icon-t-product-usage></scale-icon-t-product-usage> {{$t('actions.masteredLoudness')}}
+                        </scale-tab-header>
+                        <scale-tab-panel slot="panel">
+                            {{ $t('actions.loudness', {loudness: formatNumber(desiredMasterLUFS)} ) }}
+                        </scale-tab-panel>
+                    </scale-tab-nav>
+                </div>
+
+                <div v-if="feedback.show" class="feedback-container">
+                    <scale-icon-action-thumbs-up :size="feedback.thumbsup.hover ? '30' : '28'" @mouseover="feedback.thumbsup.hover = true" @mouseleave="feedback.thumbsup.hover = false" :fill="feedback.thumbs === 'up' ? '#E20076' : '#000000'" @click="feedback.thumbs = 'up'; console.log('up')" style="padding:5px"></scale-icon-action-thumbs-up>
+                    <scale-icon-action-thumbs-down :size="feedback.thumbsdown.hover ? '30' : '28'" @mouseover="feedback.thumbsdown.hover = true" @mouseleave="feedback.thumbsdown.hover = false" :fill="feedback.thumbs === 'down' ? '#E20076' : '#000000'" @click="feedback.thumbs = 'down'; console.log('down')" style="padding:5px"></scale-icon-action-thumbs-down>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tool-background">
+        <div class="wrapper">
+            <div class="related-links-container">
+
+                <div class="related-links-title">
+                    <h2>{{$t('relatedLinks.title')}}</h2>
+                    <p><strong>{{$t('relatedLinks.subtitle')}}</strong></p>
+                </div>
+
+                <div class="links-card-container">
+                    <div class="links-card">
+                        <scale-card class="links-card"to="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" ><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank"><div class="card__body" part="body"><slot></slot></div></a></div></template>
+                        <div style="margin: -24px">
+                            <img style="margin-bottom: -4px; width:100%"  src="./assets/card_pics/teaser_images_1_girl.jpg" alt="Alles über Magenta">
+                            <div style="padding: 24px;">
+                            <h4 style="margin: 0px 0 16px 0; font: var(--telekom-text-style-heading-4);">{{$t('relatedLinks.guidelines.title')}}</h4>
+                            <p>{{$t('relatedLinks.guidelines.description')}}</p>
+                            <scale-button size="small" href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="https://www.brand-design.telekom.com/artikel/magenta/" target="_blank" rel="noopener noreferrer" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.guidelines.button')}}</scale-button>
+                            </div>
+                        </div>
+                        </scale-card>
+                    </div>
+          
+                    <div class="links-card">
+                        <scale-card to="https://brand-dialog.telekom.com/" target="_blank" class="links-card"><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="https://brand-dialog.telekom.com/" target="_blank"><div class="card__body" part="body"><slot></slot></div></a></div></template>
+                        <div style="margin: -24px;">
+                            <img style="margin-bottom: -4px; width:100%;" src="./assets/card_pics/teaser_images_2_branddesign.jpg" alt="Brand Design-Freigaben">
+                            <div style="padding: 24px;">
+                            <h4 style="margin: 0px 0 16px 0; font: var(--telekom-text-style-heading-4);">{{$t('relatedLinks.dialog.title')}}</h4>
+                            <p v-html="$t('relatedLinks.dialog.description')"></p>
+                            <scale-button size="small" href="https://brand-dialog.telekom.com/" target="_blank" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="https://brand-dialog.telekom.com/" target="_blank" rel="noopener noreferrer" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.dialog.button')}}</scale-button>
+                            </div>
+                        </div>
+                        </scale-card>
+                    </div>
+    
+                    <div class="links-card">
+                        <scale-card to="mailto:contact@brand-design.telekom.com" class="links-card"><template shadowrootmode="open"><div class="card-border" part="border"><a class="card card--interactive" part="base interactive" href="mailto:contact@brand-design.telekom.com" target="_self"><div class="card__body" part="body"><slot></slot></div></a></div></template>
+                        <div style="margin: -24px;">
+                            <img style="margin-bottom: -4px; width:100%;" src="./assets/card_pics/teaser_images_3_help.jpg" alt="Persönlicher Support">
+                            <div style="padding: 24px;">
+                            <h4 style="margin: 0px 0 16px 0; font: var(--telekom-text-style-heading-4);">{{$t('relatedLinks.support.title')}}</h4>
+                            <p>{{$t('relatedLinks.support.description')}}</p>
+                            <scale-button size="small" href="mailto:contact@brand-design.telekom.com" icon-position="before" class="hydrated"><template shadowrootmode="open"><a class="button button--size-small button--variant-primary button--icon-before" href="mailto:contact@brand-design.telekom.com" target="_self" part="base variant-primary before" role="link"><slot></slot></a></template>{{$t('relatedLinks.support.button')}}</scale-button>
+                            </div>
+                        </div>
+                    </scale-card>
+                    </div>   
+                </div>       
+            </div>
+        </div>
+        </div>
+        
+        
+    </div>
+
+
+        <scale-telekom-footer class="scale-telekom-footer hydrated" type="standard" >
+            <scale-telekom-footer-content class="hydrated"><template shadowrootmode="open"><footer><slot name="extended-navigation"></slot><div part="base"><div part="logo"><scale-logo part="app-logo" exportparts="logo-svg" class="hydrated" style="--focus-outline: var(--telekom-line-weight-highlight) solid var(--telekom-color-functional-focus-on-dark-background);"><template shadowrootmode="open"><style>:host { --logo-size: 38px; }</style><a href="https://colorfix.brand-dialog.telekom.com/de" part="logo variant-white transparent" tabindex="-1" title="Telekom Logo"><scale-logo-svg part="icon" class="hydrated"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 38" part="logo-svg" fill="#ffffff" role="img" aria-labelledby="logo-title-2"><title id="logo-title-2">Telekom Logo</title><path d="M7.6 25.1H0v-7.6h7.6v7.6ZM0 0v12.9h2.3v-.4c0-6.1 3.4-9.9 9.9-9.9h.4V30c0 3.8-1.5 5.3-5.3 5.3H6.1V38h19.8v-2.7h-1.1c-3.8 0-5.3-1.5-5.3-5.3V2.7h.4c6.5 0 9.9 3.8 9.9 9.9v.4h2.3V0H0Zm24.3 25.1h7.6v-7.6h-7.6v7.6Z"></path></svg></scale-logo-svg></a></template></scale-logo></div><div part="body"><div part="notice"><slot name="notice"></slot></div><div part="navigation"><slot name="navigation"></slot></div></div></div></footer></template>
+                <span slot="notice"> © Deutsche Telekom AG </span>
+                <ul slot="navigation">
+                <li>
+                    <a href="https://content.brand-dialog.telekom.com/de/impressum/" target="_blank"> {{$t('footer.impressum.name')}} </a>
+                </li>
+                <li>
+                    <a href=https://content.brand-dialog.telekom.com/de/magenta-colorfix-nutzungsbestimmungen/ target="_blank">  {{$t('footer.terms.name')}} </a>
+                </li>
+                <li>
+                    <a href="https://content.brand-dialog.telekom.com/de/magenta-colorfix-datenschutz/" target="_blank">  {{$t('footer.data.name')}} </a>
+                </li>
+                </ul>
+            </scale-telekom-footer-content>
+            </scale-telekom-footer>
+
+
+        <script src="multilingual_content.js"></script>
+        <script src="soundlogo.js"></script>
+        <script async src='https://team.brand-dialog.telekom.com/addons/Channels/HelpWidget/Views/js/supportpal.min.js?v=5.2.2'></script>
+
+
+        
+    </div>
+
+
+    
+
+</body>
