@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>Skoda Logo Wizard</title>
+<title>Škoda Logo Wizard</title>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -663,22 +663,10 @@
 
                         <div class="right-controls">
                             <div v-if="isLoadingResult"style="position:absolute; z-index: 100; cursor: not-allowed; width:100%; height:100%; max-width: 300px"></div>
-
                             <div class="key-label">{{$t('soundlogo.key')}}:</div>
-                            <scale-tooltip placement="bottom-start">
-                                <span v-if="!actionList.altKeyDetected" slot="content">
-                                    {{$t('soundlogo.recommended', {key: this.soundlogoKeys[0]})}}
-                                </span>
-                                <span v-if="actionList.altKeyDetected" slot="content">
-                                    <scale-icon-content-music size="12" selected></scale-icon-content-music>
-                                    {{$t('soundlogo.bothKeysPossible')}}
-                                </span>
-
-                                    <scale-segmented-button id="keyDisplay" size="medium">
-                                        <scale-segment v-for="(key, index) in soundlogoKeys" :selected="index == selectedKey.id" @click="updateLogoKey(index)">{{key}}</option>
-                                    </scale-segmented-button>
-                                
-                            </scale-tooltip>
+                            <scale-segmented-button id="keyDisplay" size="medium">
+                                <scale-segment v-for="(key, index) in soundlogoKeys" :selected="index == selectedKey.id" @click="updateLogoKey(index)">{{key}}</option>
+                            </scale-segmented-button>
                         </div>
                     </div>
                 </transition>
@@ -788,16 +776,9 @@
         
         
     </div>
-
-
-    
-
         <script src="multilingual_content.js"></script>
         <script src="soundlogo.js"></script>
         <!-- <script async src='https://team.brand-dialog.telekom.com/addons/Channels/HelpWidget/Views/js/supportpal.min.js?v=5.2.2'></script> -->
-
-
-        
     </div>
 
 

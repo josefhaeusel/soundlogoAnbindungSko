@@ -14,8 +14,8 @@ class ComputerVision:
 
         self.secSearchSkip = 0.1
         self.frameSearchSkip = 10 
-        self.analysisStartBeforeEnd = 6
-        self.analysisAbortBeforeEnd = 0.5
+        self.analysisStartBeforeEnd = 4
+        self.analysisAbortBeforeEnd = 0.1
         
         self.setVideoBeforeEnd()
         self.method = cv2.TM_CCOEFF_NORMED

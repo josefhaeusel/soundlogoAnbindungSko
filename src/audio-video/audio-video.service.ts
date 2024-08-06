@@ -56,7 +56,7 @@ export class AudioVideoService {
 
       ffmpeg(inputPath)
         .outputOptions(['-map 0:v', '-c:v libx264', '-map 0:a', '-c:a copy', 
-          '-pix_fmt yuv420p', '-profile:v high', '-level 4.0', '-refs 1', '-r 25', '-preset medium'
+          '-pix_fmt yuv420p', '-profile:v high', '-level 4.0', '-refs 1', '-r 25'
           ])
         .output(videoOutputPath)
         .output(audioOutputPath)

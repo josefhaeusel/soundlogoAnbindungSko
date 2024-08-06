@@ -377,14 +377,9 @@ window.app = Vue.createApp({
                 this.actionList.altKeyDetected=true
 
                 const alt_logo_key = logoKeyMap[analysis.audioAnalysis.analysis.also_possible.key]    
-                if (this.soundlogoKeys[1] != alt_logo_key){
+                if (this.soundlogoKeys[0] != alt_logo_key){
                     console.log(`Alt Key ${alt_logo_key} has replaced ${this.soundlogoKeys[1]}`)
                     this.soundlogoKeys[1] = alt_logo_key
-
-                    if (likely_key.key.includes(alt_logo_key) && likely_key.key.includes("minor")){
-                        this.soundlogoKeys = this.soundlogoKeys.reverse()
-                        console.warn(`Keys have been swapped, because of major prioritization over minor of same root.`)
-                    }
                 }
             }
 
@@ -468,7 +463,7 @@ window.app = Vue.createApp({
             },
 
         setSoundlogoPosition(){
-            this.soundlogoPosition = this.videoAnalysis.logo_start - 3.55 //Hardcut: 4.25, Besser in Sync: 4.07 // 2.55
+            this.soundlogoPosition = this.videoAnalysis.logo_start - 4.55 //Hardcut: 4.25, Besser in Sync: 4.07 // 2.55
         },
         async setKeys(keyName){
             const key = logoKeyMap[keyName];
@@ -827,18 +822,18 @@ async function loadMasterGain(Context) {
 
 async function loadLogoBuffers() {
     logoBuffers = new Tone.ToneAudioBuffers({
-        'A': "samples/soundlogos/TLS_A-3.wav",
-        'A#': "samples/soundlogos/TLS_A#-3.wav",
-        'B': "samples/soundlogos/TLS_B-3.wav",
-        'C': "samples/soundlogos/TLS_C-3.wav",
-        'C#': "samples/soundlogos/TLS_C#-3.wav",
-        'D': "samples/soundlogos/TLS_D-3.wav",
-        'D#': "samples/soundlogos/TLS_D#-3.wav",
-        'E': "samples/soundlogos/TLS_E-3.wav",
-        'F': "samples/soundlogos/TLS_F-3.wav",
-        'F#': "samples/soundlogos/TLS_F#-3.wav",
-        'G': "samples/soundlogos/TLS_G-3.wav",
-        'G#': "samples/soundlogos/TLS_G#-3.wav"
+        'A': "samples/soundlogos/A.wav",
+        'A#': "samples/soundlogos/A#.wav",
+        'B': "samples/soundlogos/B.wav",
+        'C': "samples/soundlogos/C.wav",
+        'C#': "samples/soundlogos/C#.wav",
+        'D': "samples/soundlogos/D.wav",
+        'D#': "samples/soundlogos/D#.wav",
+        'E': "samples/soundlogos/E.wav",
+        'F': "samples/soundlogos/F.wav",
+        'F#': "samples/soundlogos/F#.wav",
+        'G': "samples/soundlogos/G.wav",
+        'G#': "samples/soundlogos/G#.wav"
     });
 }
 
@@ -893,7 +888,7 @@ async function loadAudioplayer(Context) {
 }
 
 function calculateEnvScheduleTime(audioDuration, currentPosition, logoStart) {
-    const secondsTillStart = (logoStart+0.4) - currentPosition;
+    const secondsTillStart = (logoStart+1.75) - currentPosition;
     return secondsTillStart;
 }
 
@@ -902,7 +897,7 @@ async function ampEnvelope() {
         attack: 0,
         decay: 0,
         sustain: 1.0,
-        release: 2
+        release: 1.5
 
     });
 
@@ -1075,10 +1070,10 @@ function scaleValue(value) {
 
 const logoKeyMap = {
 
-    'A minor': 'C',
-    'A# minor': 'C#',
-    'B minor': 'D',
-    'C minor': 'D#',
+    'A minor': 'A',
+    'A# minor': 'A#',
+    'B minor': 'B',
+    'C minor': 'C',
     'C# minor': 'E',
     'D minor': 'F',
     'D# minor': 'F#',
@@ -1088,18 +1083,18 @@ const logoKeyMap = {
     'G minor': 'A#',
     'G# minor': 'B',
 
-    'A major': 'A',
-    'A# major': 'A#',
-    'B major': 'B',
-    'C major': 'C',
-    'C# major': 'C#',
-    'D major': 'D',
-    'D# major': 'D#',
-    'E major': 'E',
-    'F major': 'F',
-    'F# major': 'F#',
-    'G major': 'G',
-    'G# major': 'G#',
+    'A major': 'F#',
+    'A# major': 'G',
+    'B major': 'G#',
+    'C major': 'A',
+    'C# major': 'A#',
+    'D major': 'B',
+    'D# major': 'C',
+    'E major': 'C#',
+    'F major': 'D',
+    'F# major': 'D#',
+    'G major': 'E',
+    'G# major': 'F',
 
 }
 
