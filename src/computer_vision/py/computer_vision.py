@@ -10,7 +10,7 @@ class ComputerVision:
         self.videoPath = videoPath
         self.video = cv2.VideoCapture(self.videoPath)
         self.fps, self.total_frames, self.duration_secs, self.frame_width, self.frame_height = self.getVideoProperties()
-        self.threshold = 0.85
+        self.threshold = 0.8
 
         self.secSearchSkip = 0.1
         self.frameSearchSkip = 10 
@@ -19,7 +19,7 @@ class ComputerVision:
         
         self.setVideoBeforeEnd()
         self.method = cv2.TM_CCOEFF_NORMED
-        self.detection_scales = np.linspace(0.4, 1.0, 7)[::-1]
+        self.detection_scales = np.linspace(0.5, 1.0, 7)[::-1]
         self.isUHD = self.checkUHDResize()
 
         self.logo_scale = None

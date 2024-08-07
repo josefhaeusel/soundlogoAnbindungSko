@@ -8,6 +8,7 @@ let audioPlayer
 let audioBuffer
 let envelope
 let master
+let masterEnvelope
 
 window.app = Vue.createApp({
 
@@ -57,7 +58,7 @@ window.app = Vue.createApp({
 
             selectedKey: { id: '0', key: 'A' },
             measuredLUFS: 0,
-            soundlogoLUFS:-10,
+            soundlogoLUFS:-14,
             videoPlayerLUFS:-26.71,
             desiredMasterLUFS: -20,
 
@@ -334,8 +335,8 @@ window.app = Vue.createApp({
             //APPENDED ANIMATION PART
             if (analysis.videoAnalysis.appendAnimation == true) {
                 console.log("APPENDED ANIMATION")
-                this.audioDuration += 3
-                this.videoAnalysis.logo_start = this.audioDuration - 1.55 //No Claim Timing -1.02
+                this.audioDuration += 1.96
+                this.videoAnalysis.logo_start = this.audioDuration - 0.8 //logo detection position 0.68
                 this.actionList.appendedAnimation = analysis.videoAnalysis.appendAnimation;
             }
 
@@ -463,7 +464,7 @@ window.app = Vue.createApp({
             },
 
         setSoundlogoPosition(){
-            this.soundlogoPosition = this.videoAnalysis.logo_start - 4.55 //Hardcut: 4.25, Besser in Sync: 4.07 // 2.55
+            this.soundlogoPosition = this.videoAnalysis.logo_start - 4.62 //4.62
         },
         async setKeys(keyName){
             const key = logoKeyMap[keyName];
@@ -680,6 +681,10 @@ async function setupAudioNodes(context, key='A') {
         master = await loadMasterGain(context);
         console.log('Master gain node initialized:', master);
 
+        masterEnvelope = await loadMasterEnvelope(context)
+        console.log('Master envelope initialized:', masterEnvelope);
+
+
         envelope = await ampEnvelope();
         console.log('Envelope initialized:', envelope);
 
@@ -773,6 +778,7 @@ function writeString(view, offset, string) {
 function scheduleAudio(audioDuration, currentPosition, logoStart, transport) {
 
     const secondsTillEnvStart = calculateEnvScheduleTime(audioDuration, currentPosition, logoStart);
+    const secondsTillEndEnv = (audioDuration - currentPosition) -0.08
 
     if (secondsTillEnvStart >= 0) {
         transport.schedule((time) => {
@@ -784,6 +790,16 @@ function scheduleAudio(audioDuration, currentPosition, logoStart, transport) {
             envelope.triggerRelease(time, time);
             console.log("Go Envelope!");
         }, secondsTillEnvStart);
+    }
+
+    if (secondsTillEndEnv >= 0) {
+        transport.schedule((time) => {
+            masterEnvelope.triggerAttack(time);
+        });
+        transport.schedule((time) => {
+            envelope.triggerRelease(time, time);
+            console.log("Go Master Envelope Fade Out!");
+        }, secondsTillEndEnv);
     }
 
 }
@@ -813,12 +829,30 @@ function calculateLogoScheduleTime(audioDuration, currentPosition, logoStart) {
 
 async function loadMasterGain(Context) {
 
-    const newMasterGain = new Tone.Gain(0, 'decibels').toDestination();
+    const newMasterGain = new Tone.Gain(0, 'decibels')
     newMasterGain.context = Context;
 
     return newMasterGain
 
 }
+
+async function loadMasterEnvelope() {
+
+    const masterEnv = new Tone.AmplitudeEnvelope({
+        attack: 0,
+        decay: 0,
+        sustain: 1.0,
+        release: 0.05
+    }).toDestination();
+
+    masterEnv.releaseCurve = "cosine";
+
+    master.connect(masterEnv)
+
+    return masterEnv
+
+}
+
 
 async function loadLogoBuffers() {
     logoBuffers = new Tone.ToneAudioBuffers({

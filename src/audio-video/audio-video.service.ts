@@ -195,7 +195,7 @@ export class AudioVideoService {
     this.logger.debug(`videoInputPath: ${inputVideoPath}`)
 
     const appendAnimationPath = path.resolve(
-      `.${path.sep}src${path.sep}audio-video${path.sep}animations${path.sep}noaudio${path.sep}T_outro_claim_hard_cut_${videoData.ratio}_${videoData.fidelity}.mp4`,
+      `.${path.sep}src${path.sep}audio-video${path.sep}animations${path.sep}noaudio${path.sep}animation_${videoData.ratio}_${videoData.fidelity}.mp4`,
     )
 
     this.logger.debug(`appendAnimationPath: ${appendAnimationPath}`)
