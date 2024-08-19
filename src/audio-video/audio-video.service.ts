@@ -27,18 +27,17 @@ export interface splitFiles {
 export class AudioVideoService {
   private readonly logger = new Logger(AudioVideoService.name)
 
-  public async split(inputPath: string): Promise<splitFiles> {
+  public async split(inputPath: string, convertVideo: boolean): Promise<splitFiles> {
     const audioCodec = await this._getAudioCodecSettings(inputPath)
 
     const inputPathParsed = path.parse(inputPath)
-
     const inputPathName = path.join(inputPathParsed.dir, inputPathParsed.name)
     const inputPathExt = inputPathParsed.ext
 
     const videoOutputPath = this._getVideoPath(
       inputPathName,
-      inputPathExt,
-      false,
+      ".mp4", //2024-08-19 JH
+      convertVideo, //2024-08-19 JH
       true,
       false,
     )
@@ -55,9 +54,23 @@ export class AudioVideoService {
       this._initFfmpeg()
 
       ffmpeg(inputPath)
-        .outputOptions(['-map 0:v', '-c:v libx264', '-map 0:a', '-c:a copy', 
-          '-pix_fmt yuv420p', '-profile:v high', '-level 4.0', '-refs 1', '-r 25'
-          ])
+        .inputOptions([
+          '-hwaccel auto',
+        ])
+        .outputOptions([
+          '-map 0:v',
+          '-c:v libx264',
+          '-map 0:a',
+          '-c:a copy',
+          '-pix_fmt yuv420p',
+          // 2024-08-13, RP '-profile:v high',
+          '-profile:v main',
+          '-level 4.0',
+          // 2024-08-13, RP '-refs 1',
+          '-r 25',
+          // 2024-08-13, RP '-preset medium',
+          '-preset faster',
+        ])
         .output(videoOutputPath)
         .output(audioOutputPath)
         .on('error', (error) => {
@@ -92,6 +105,9 @@ export class AudioVideoService {
       this._initFfmpeg()
 
       ffmpeg(inputPath)
+        .inputOptions([
+          '-hwaccel auto',
+        ])
         .outputOptions(['-map 0:v', '-c:v libx264', '-map 0:a', '-c:a copy'])
         .output(videoOutputPath)
         .on('error', (error) => {
@@ -207,12 +223,17 @@ export class AudioVideoService {
       ffmpeg()
         .input(inputVideoPath)
         .input(appendAnimationPath)
+        .inputOptions([
+          '-hwaccel auto',
+        ])
         .complexFilter(
             [
                 '[0:v][1:v]concat=n=2:v=1[outv]' // Concatenate only video streams
             ],
             ['outv'],
         )
+        // 2024-08-13, RP .outputOptions(['-map 0:a', '-c:v libx264', '-c:a copy']) // Keep the audio from the first input and copy codec
+        // 2024-08-19 JH .outputOptions(['-map 0:a', '-c:v copy', '-c:a copy']) // Keep the audio from the first input and copy codec
         .outputOptions(['-map 0:a', '-c:v libx264', '-c:a copy']) // Keep the audio from the first input and copy codec
         .on('error', (error) => {
           this.logger.error('error:', error)
@@ -281,7 +302,11 @@ export class AudioVideoService {
       ffmpeg()
         .addInput(videoInputPath)
         .addInput(inputAudioPath)
-        .addOptions(['-map 0:v', '-map 1:a', '-c:v libx264'])
+        .inputOptions([
+          '-hwaccel auto',
+        ])
+        // 2024-08-13, RP .addOptions(['-map 0:v', '-map 1:a', '-c:v libx264'])
+        .addOptions(['-map 0:v', '-map 1:a', '-c:v copy'])
         .audioCodec(videoInputAudioCodec.codec_name)
         .format('mp4')
         .on('error', (error) => {
