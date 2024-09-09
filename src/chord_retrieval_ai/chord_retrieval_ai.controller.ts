@@ -298,6 +298,7 @@ export class ChordRetrievalAiController {
     @Res() response: Response,
   ) {
     try {
+            
       this.logger.log(`Starting audio upload handling: ${file.originalname}`)
 
       const uploadPrefix = (request.session as ISession).uploadPrefix

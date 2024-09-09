@@ -3,12 +3,15 @@ import {
   Get,
   Logger,
   Query,
+  Req,
   Res,
   StreamableFile,
 } from '@nestjs/common'
 import { DownloadService } from './download.service'
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { Csrf } from 'ncsrf'
+import { ISession } from '../chord_retrieval_ai/chord_retrieval_ai.controller'
+import * as path from 'node:path'
 
 @Controller('download')
 export class DownloadController {
@@ -21,10 +24,15 @@ export class DownloadController {
   async streamable(
     @Query('file') file: string,
     @Res({ passthrough: true }) response: Response,
+    @Req() request: Request,
   ) {
-    const fileStream = this.downloadService.getFileStream(file)
-    const fileType = this.downloadService.getFileType(file)
-    const fileSize = this.downloadService.getFileSize(file)
+    const uploadPrefix = (request.session as ISession).uploadPrefix
+    const downloadFile = path.join(uploadPrefix, file)
+    this.logger.debug(downloadFile)
+
+    const fileStream = this.downloadService.getFileStream(downloadFile)
+    const fileType = this.downloadService.getFileType(downloadFile)
+    const fileSize = this.downloadService.getFileSize(downloadFile)
 
     this.logger.debug(fileType)
     this.logger.debug(fileSize)

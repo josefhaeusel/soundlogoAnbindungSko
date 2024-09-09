@@ -506,6 +506,10 @@
     .links-card {
         width: 30%
     }
+    .logo {
+        height: 21%;
+        transform: translate3d(25%, 183%, 0); 
+    }
 
     @media (max-width: 1000px) {
         .links-card {
@@ -522,6 +526,12 @@
             font-size: 45px;
         }
     }
+    @media (min-width: 1680px) {
+        .logo {
+            /* height: 21%; */
+            transform: translate3d(-10%, 183%, 0); 
+        }
+    }
    
     </style>
 </head>
@@ -532,8 +542,7 @@
 
             <scale-telekom-nav-list slot="logo" aria-label="Logo">
                 <scale-telekom-nav-item active="" aria-label="Logo" style="background-color: #ffffff;">
-                    <img src="assets/skoda_logo1.jpg" alt="" style="height: 21%;
-                    transform: translate3d(25%, 183%, 0);">
+                    <img src="assets/skoda_logo1.jpg" alt="" class="logo">
                 </scale-telekom-nav-item>
               </scale-telekom-nav-list>
             <!-- main-nav (desktop) -->
@@ -655,11 +664,16 @@
                 <transition name="fade">
                     <div class="controls-container" v-if="!isLoadingAnalysis">
                         <div class="left-controls">
-                            <scale-button @click="downloadVideo" style="left:0; display:flex; align-items: center;" :disabled="isLoadingResult">
+                            <scale-button v-if="!showTimeoutError" @click="downloadVideo" style="left:0; display:flex; align-items: center;" :disabled="isLoadingResult">
                                 <scale-loading-spinner v-if="isLoadingResult"></scale-loading-spinner>
                                 <scale-icon-action-download size=20 v-if="!isLoadingResult"></scale-icon-action-download>
                                 {{$t('download.result')}}
                             </scale-button>
+
+                            <scale-notification v-show="showDownloadError" :heading="$t('upload.downloadError.title')" variant="warning" type="toast" dismissible opened style="z-index: 1000; max-width: 30%">
+                                <span v-show="!showTimeoutError" slot="text">{{$t('upload.downloadError.description')}}</span>
+                                <span v-show="showTimeoutError" slot="text">{{$t('upload.downloadError.timeoutVariant')}}</span>
+                            </scale-notification>
                         </div>
 
                         <div class="right-controls">
